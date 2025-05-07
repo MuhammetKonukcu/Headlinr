@@ -1,0 +1,15 @@
+<resources>
+    <string name="en">English</string>
+    <string name="tr">Turkish</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="bookmark">Bookmark</string>
+    <string name="back">Back</string>
+    <string name="check_internet_connection">Please check your internet connection!</string>
+    <string name="search_hint">Search...</string>
+    <string name="refresh">Refresh</string>
+    <string name="reset">Reset</string>
+    <string name="apply">Apply</string>
+    <string name="add_fav">Add favorite</string>
+    <string name="share">Share</string>
+</resources>

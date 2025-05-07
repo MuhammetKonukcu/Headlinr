@@ -1,0 +1,16 @@
+<resources>
+    <string name="en">İngilizce</string>
+    <string name="tr">Türkçe</string>
+    <string name="home">Ana Sayfa</string>
+    <string name="search">Ara</string>
+    <string name="bookmark">Kaydedildi</string>
+    <string name="back">Geri</string>
+    <string name="check_internet_connection">Lütfen internet bağlantınızı kontrol edin!</string>
+    <string name="search_hint">Ara...</string>
+    <string name="refresh">Yenile</string>
+    <string name="reset">Sıfırla</string>
+    <string name="apply">Uygula</string>
+    <string name="sort_by">Sırala</string>
+    <string name="add_fav">Kaydedilenlere ekle</string>
+    <string name="share">Paylaş</string>
+</resources>
