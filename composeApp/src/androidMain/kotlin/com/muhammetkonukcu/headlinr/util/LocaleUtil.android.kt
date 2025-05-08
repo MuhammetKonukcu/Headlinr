@@ -7,7 +7,7 @@ import java.util.Locale
 actual fun getCurrentLanguage(): String = Locale.getDefault().toLanguageTag()
 
 actual fun getCurrentCountry(): String {
-    return Locale.getDefault().country.lowercase().ifEmpty { "us" }
+    return Locale.getDefault().country.lowercase().ifEmpty { "tr" }
 }
 
 actual fun formatToLocalDate(isoString: String): String {

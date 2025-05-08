@@ -1,9 +1,13 @@
 package com.muhammetkonukcu.headlinr.di
 
 import com.muhammetkonukcu.headlinr.BuildKonfig
+import com.muhammetkonukcu.headlinr.room.dao.NewsDao
+import com.muhammetkonukcu.headlinr.room.dao.SettingsDao
 import com.muhammetkonukcu.headlinr.room.database.AppDatabase
 import com.muhammetkonukcu.headlinr.room.repository.NewsLocalRepository
 import com.muhammetkonukcu.headlinr.room.repository.NewsLocalRepositoryImpl
+import com.muhammetkonukcu.headlinr.room.repository.SettingsLocalRepository
+import com.muhammetkonukcu.headlinr.room.repository.SettingsLocalRepositoryImpl
 import com.muhammetkonukcu.headlinr.viewmodel.BookmarkViewModel
 import com.muhammetkonukcu.headlinr.viewmodel.HomeViewModel
 import com.muhammetkonukcu.headlinr.viewmodel.SearchViewModel
@@ -13,15 +17,19 @@ import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 
 fun appModule(): Module = module {
-    single<HomeViewModel> { HomeViewModel(get(), get()) }
+    single<HomeViewModel> { HomeViewModel(get(), get(), get()) }
     single<BookmarkViewModel> { BookmarkViewModel(get()) }
     single<SearchViewModel> { SearchViewModel(get(), get()) }
 }
 
 fun localRepositoryModule(): Module = module {
-    single { get<AppDatabase>().getNewsDao() }
-    single<NewsLocalRepository> { NewsLocalRepositoryImpl(get()) }
+    single<NewsDao>     { get<AppDatabase>().getNewsDao() }
+    single<SettingsDao> { get<AppDatabase>().getSettingsDao() }
+
+    single<NewsLocalRepository>     { NewsLocalRepositoryImpl(get()) }
+    single<SettingsLocalRepository> { SettingsLocalRepositoryImpl(get()) }
 }
+
 
 expect fun platformModule(): Module
 

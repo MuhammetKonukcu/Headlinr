@@ -11,8 +11,8 @@ actual fun getCurrentLanguage(): String {
 
 actual fun getCurrentCountry(): String {
     val locale = NSLocale.currentLocale
-    val country = locale.objectForKey(NSLocaleCountryCode) as? String ?: "US"
-    return country.uppercase()
+    val country = locale.objectForKey(NSLocaleCountryCode) as? String ?: "tr"
+    return country.lowercase()
 }
 
 actual fun formatToLocalDate(isoString: String): String {

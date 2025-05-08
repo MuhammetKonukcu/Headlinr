@@ -12,7 +12,8 @@ class SearchNewsPagingSource(
     private val client: MediaStackClient,
     private val localRepo: NewsLocalRepository,
     private val keywords: String,
-    private val categories: List<String>
+    private val categories: List<String>,
+    private val country: String
 ) : PagingSource<Int, Article>() {
 
     override fun getRefreshKey(state: PagingState<Int, Article>): Int? =
@@ -31,6 +32,7 @@ class SearchNewsPagingSource(
             val response = client.searchNews(
                 keywords   = keywords,
                 categories = categories,
+                country = country,
                 limit      = pageSize,
                 offset     = offset
             )

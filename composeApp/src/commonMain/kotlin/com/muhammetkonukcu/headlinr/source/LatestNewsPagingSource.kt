@@ -11,7 +11,8 @@ private const val STARTING_PAGE = 1
 class LatestNewsPagingSource(
     private val client: MediaStackClient,
     private val localRepo: NewsLocalRepository,
-    private val categories: List<String>
+    private val categories: List<String>,
+    private val country: String
 ) : PagingSource<Int, Article>() {
 
     override fun getRefreshKey(state: PagingState<Int, Article>): Int? =
@@ -28,6 +29,7 @@ class LatestNewsPagingSource(
 
         return try {
             val response = client.getLatestNews(
+                country = country,
                 categories = categories,
                 limit      = pageSize,
                 offset     = offset

@@ -75,7 +75,7 @@ fun MainScreen() {
                 ) { innerPadding ->
                     NavHost(
                         navController = navController,
-                        startDestination = "Search",
+                        startDestination = "Home",
                     ) {
                         composable("Home") {
                             HomeScreen(

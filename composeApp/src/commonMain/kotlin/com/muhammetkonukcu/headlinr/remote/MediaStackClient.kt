@@ -12,19 +12,19 @@ import io.ktor.http.isSuccess
 
 class MediaStackClient(
     private val httpClient: HttpClient,
-    private val apiKey: String,
-    private val defaultRegion: String
+    private val apiKey: String
 ) {
     private val baseUrl = "api.mediastack.com"
 
     suspend fun getLatestNews(
+        country: String,
         categories: List<String> = emptyList(),
         limit: Int = 20,
         offset: Int = 0
     ): MediaStackResponse = sendRequest(
         path = "v1/news",
         extraParams = buildMap {
-            put("countries", defaultRegion)
+            put("countries", country)
             put("limit", limit.toString())
             put("offset", offset.toString())
             if (categories.isNotEmpty()) put("categories", categories.joinToString(","))
@@ -32,6 +32,7 @@ class MediaStackClient(
     ).body()
 
     suspend fun searchNews(
+        country: String,
         keywords: String,
         categories: List<String> = emptyList(),
         limit: Int = 20,
@@ -40,7 +41,7 @@ class MediaStackClient(
         path = "v1/news",
         extraParams = buildMap {
             put("keywords", keywords)
-            put("countries", defaultRegion)
+            put("countries", country)
             put("limit", limit.toString())
             put("offset", offset.toString())
             if (categories.isNotEmpty()) put("categories", categories.joinToString(","))
@@ -61,7 +62,6 @@ class MediaStackClient(
             }
         }
         if (!call.status.isSuccess()) {
-            println("MediaStack '$path' error: HTTP ${call.status.value}")
             throw RuntimeException("MediaStack '$path' error: HTTP ${call.status.value}")
         }
         return call
