@@ -12,6 +12,8 @@
     <string name="apply">Apply</string>
     <string name="add_fav">Add favorite</string>
     <string name="share">Share</string>
+    <string name="news_detail">News Detail</string>
+    <string name="open_in_browser">Open in Browser</string>
 
     <string name="country_argentina">Argentina</string>
     <string name="country_australia">Australia</string>

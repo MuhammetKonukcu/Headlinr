@@ -13,6 +13,8 @@
     <string name="sort_by">Sırala</string>
     <string name="add_fav">Kaydedilenlere ekle</string>
     <string name="share">Paylaş</string>
+    <string name="news_detail">Haber Detayı</string>
+    <string name="open_in_browser">Tarayıcıda Aç</string>
 
     <string name="country_argentina">Arjantin</string>
     <string name="country_australia">Avustralya</string>

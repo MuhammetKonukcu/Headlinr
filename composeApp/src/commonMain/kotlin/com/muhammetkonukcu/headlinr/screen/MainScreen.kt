@@ -23,13 +23,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.muhammetkonukcu.headlinr.lang.AppLang
 import com.muhammetkonukcu.headlinr.lang.rememberAppLocale
 import com.muhammetkonukcu.headlinr.model.BottomNavModel
+import com.muhammetkonukcu.headlinr.remote.entity.Article
 import com.muhammetkonukcu.headlinr.theme.AppTheme
 import headlinr.composeapp.generated.resources.Res
 import headlinr.composeapp.generated.resources.bookmark
@@ -41,6 +44,8 @@ import headlinr.composeapp.generated.resources.ph_house
 import headlinr.composeapp.generated.resources.ph_house_fill
 import headlinr.composeapp.generated.resources.ph_magnifying_glass
 import headlinr.composeapp.generated.resources.search
+import io.ktor.http.decodeURLQueryComponent
+import kotlinx.serialization.json.Json
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -93,6 +98,18 @@ fun MainScreen() {
                             BookmarkScreen(
                                 navController = navController,
                                 innerPadding = innerPadding
+                            )
+                        }
+                        composable(
+                            route = "NewsDetail/{article}",
+                            arguments = listOf(
+                                navArgument(name = "article") { type = NavType.StringType }
+                            )
+                        ) { backStack ->
+                            val articleStr = backStack.arguments!!.getString("article")!!
+                            NewsDetailScreen(
+                                navController = navController,
+                                articleStr = articleStr
                             )
                         }
                     }

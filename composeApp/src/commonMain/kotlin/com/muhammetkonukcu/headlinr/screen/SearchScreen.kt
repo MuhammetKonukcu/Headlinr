@@ -50,6 +50,8 @@ import headlinr.composeapp.generated.resources.Res
 import headlinr.composeapp.generated.resources.ph_magnifying_glass
 import headlinr.composeapp.generated.resources.search
 import headlinr.composeapp.generated.resources.search_hint
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -80,7 +82,11 @@ fun SearchScreen(navController: NavController, innerPadding: PaddingValues) {
                 }
             )
 
-            ArticlesLazyColumn(lazyPagingItems = lazyPagingItems, searchViewModel = viewModel)
+            ArticlesLazyColumn(
+                lazyPagingItems = lazyPagingItems,
+                searchViewModel = viewModel,
+                navController = navController
+            )
         }
     }
 }
@@ -182,7 +188,8 @@ private fun SearchBar(
 @Composable
 fun ArticlesLazyColumn(
     lazyPagingItems: LazyPagingItems<Article>,
-    searchViewModel: SearchViewModel
+    searchViewModel: SearchViewModel,
+    navController: NavController
 ) {
     LazyColumn(
         contentPadding = PaddingValues(vertical = 12.dp, horizontal = 12.dp),
@@ -205,12 +212,21 @@ fun ArticlesLazyColumn(
         items(count = lazyPagingItems.itemCount) { index ->
             val item = lazyPagingItems[index]
             item?.let {
-                ArticleItem(article = item, onFavClicked = { value ->
-                    if (value)
-                        searchViewModel.addFavoriteNews(item)
-                    else
-                        searchViewModel.removeFavoriteNews(item.url)
-                })
+                ArticleItem(
+                    article = item,
+                    onFavClicked = { value ->
+                        if (value)
+                            searchViewModel.addFavoriteNews(item)
+                        else
+                            searchViewModel.removeFavoriteNews(item.url)
+                    },
+                    onItemClicked = {
+                        val article = Json.encodeToString(item)
+                        navController.navigate(route = "NewsDetail/$article") {
+                            launchSingleTop = true
+                        }
+                    }
+                )
             }
         }
 

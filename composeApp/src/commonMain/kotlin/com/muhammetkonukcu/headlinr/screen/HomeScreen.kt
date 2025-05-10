@@ -56,6 +56,9 @@ import headlinr.composeapp.generated.resources.ph_paper_plane_tilt
 import headlinr.composeapp.generated.resources.placeholder_dark
 import headlinr.composeapp.generated.resources.placeholder_light
 import headlinr.composeapp.generated.resources.share
+import io.ktor.http.encodeURLParameter
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -77,13 +80,21 @@ fun HomeScreen(navController: NavController, innerPadding: PaddingValues) {
                 })
         }) { padding ->
         Box(modifier = Modifier.fillMaxSize().padding(padding)) {
-            ArticlesLazyColumn(lazyPagingItems = articles, viewModel = viewModel)
+            ArticlesLazyColumn(
+                lazyPagingItems = articles,
+                viewModel = viewModel,
+                navController = navController
+            )
         }
     }
 }
 
 @Composable
-fun ArticlesLazyColumn(lazyPagingItems: LazyPagingItems<Article>, viewModel: HomeViewModel) {
+fun ArticlesLazyColumn(
+    lazyPagingItems: LazyPagingItems<Article>,
+    viewModel: HomeViewModel,
+    navController: NavController
+) {
     LazyColumn(
         contentPadding = PaddingValues(vertical = 12.dp, horizontal = 12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -105,12 +116,22 @@ fun ArticlesLazyColumn(lazyPagingItems: LazyPagingItems<Article>, viewModel: Hom
         items(count = lazyPagingItems.itemCount) { index ->
             val item = lazyPagingItems[index]
             item?.let {
-                ArticleItem(article = item, onFavClicked = { value ->
-                    if (value)
-                        viewModel.addFavoriteNews(item)
-                    else
-                        viewModel.removeFavoriteNews(item.url)
-                })
+                ArticleItem(
+                    article = item,
+                    onFavClicked = { value ->
+                        if (value)
+                            viewModel.addFavoriteNews(item)
+                        else
+                            viewModel.removeFavoriteNews(item.url)
+                    },
+                    onItemClicked = {
+                        val rawJson = Json.encodeToString(item)
+                        val safeJson = rawJson.encodeURLParameter()
+                        navController.navigate("NewsDetail/$safeJson") {
+                            launchSingleTop = true
+                        }
+                    }
+                )
             }
         }
 
@@ -129,7 +150,7 @@ fun ArticlesLazyColumn(lazyPagingItems: LazyPagingItems<Article>, viewModel: Hom
 }
 
 @Composable
-fun ArticleItem(article: Article, onFavClicked: (Boolean) -> Unit) {
+fun ArticleItem(article: Article, onFavClicked: (Boolean) -> Unit, onItemClicked: () -> Unit) {
     var isFavorite by remember { mutableStateOf(article.isFavorite) }
     Column(
         modifier = Modifier
@@ -138,6 +159,7 @@ fun ArticleItem(article: Article, onFavClicked: (Boolean) -> Unit) {
                 shape = RoundedCornerShape(size = 12.dp)
             )
             .padding(all = 8.dp)
+            .clickable { onItemClicked.invoke() }
     ) {
         Text(
             text = article.source,

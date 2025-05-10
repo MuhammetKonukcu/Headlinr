@@ -1,6 +1,7 @@
 package com.muhammetkonukcu.headlinr.screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -30,6 +31,7 @@ import androidx.navigation.NavController
 import androidx.paging.LoadState
 import app.cash.paging.compose.LazyPagingItems
 import app.cash.paging.compose.collectAsLazyPagingItems
+import com.muhammetkonukcu.headlinr.remote.entity.Article
 import com.muhammetkonukcu.headlinr.room.entity.NewsEntity
 import com.muhammetkonukcu.headlinr.util.ErrorItem
 import com.muhammetkonukcu.headlinr.util.LoadAsyncImage
@@ -44,6 +46,9 @@ import headlinr.composeapp.generated.resources.ph_paper_plane_tilt
 import headlinr.composeapp.generated.resources.placeholder_dark
 import headlinr.composeapp.generated.resources.placeholder_light
 import headlinr.composeapp.generated.resources.share
+import io.ktor.http.encodeURLParameter
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -146,6 +151,23 @@ private fun NewsEntityItem(
                 shape = RoundedCornerShape(size = 12.dp)
             )
             .padding(all = 8.dp)
+            .clickable {
+                val article = Article(
+                    url = newsEntity.url,
+                    title = newsEntity.title,
+                    source = newsEntity.source,
+                    country = newsEntity.country,
+                    category = newsEntity.category,
+                    image = newsEntity.imageUrl,
+                    description = newsEntity.description,
+                    publishedAt = newsEntity.publishedAt
+                )
+                val rawJson = Json.encodeToString(article)
+                val safeJson = rawJson.encodeURLParameter()
+                navController.navigate("NewsDetail/$safeJson") {
+                    launchSingleTop = true
+                }
+            }
     ) {
         Text(
             text = newsEntity.source,
