@@ -85,7 +85,8 @@ fun SearchScreen(navController: NavController, innerPadding: PaddingValues) {
             ArticlesLazyColumn(
                 lazyPagingItems = lazyPagingItems,
                 searchViewModel = viewModel,
-                navController = navController
+                navController = navController,
+                keyword = keyword
             )
         }
     }
@@ -140,10 +141,10 @@ private fun SearchBar(
                     )
                 },
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedTextColor = MaterialTheme.colorScheme.onPrimary,
-                    unfocusedTextColor = MaterialTheme.colorScheme.onPrimary,
-                    focusedContainerColor = MaterialTheme.colorScheme.onBackground,
-                    unfocusedContainerColor = MaterialTheme.colorScheme.onBackground,
+                    focusedTextColor = MaterialTheme.colorScheme.primary,
+                    unfocusedTextColor = MaterialTheme.colorScheme.primary,
+                    focusedContainerColor = MaterialTheme.colorScheme.background,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.background,
                     unfocusedPlaceholderColor = MaterialTheme.colorScheme.onTertiary,
                     focusedPlaceholderColor = MaterialTheme.colorScheme.onTertiary,
                     focusedBorderColor = Color.Transparent,
@@ -189,7 +190,8 @@ private fun SearchBar(
 fun ArticlesLazyColumn(
     lazyPagingItems: LazyPagingItems<Article>,
     searchViewModel: SearchViewModel,
-    navController: NavController
+    navController: NavController,
+    keyword: String
 ) {
     LazyColumn(
         contentPadding = PaddingValues(vertical = 12.dp, horizontal = 12.dp),
@@ -198,7 +200,7 @@ fun ArticlesLazyColumn(
         when (lazyPagingItems.loadState.refresh) {
             is LoadState.Loading -> {
                 item {
-                    LoadingItem()
+                    if (keyword.isNotBlank()) LoadingItem()
                 }
             }
 

@@ -205,7 +205,9 @@ fun ArticleItem(article: Article, onFavClicked: (Boolean) -> Unit, onItemClicked
         }
 
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            IconButton(onClick = {}) {
+            IconButton(onClick = {
+                // TODO: Handle later
+            }) {
                 Icon(
                     painter = painterResource(Res.drawable.ph_paper_plane_tilt),
                     contentDescription = stringResource(Res.string.share),
