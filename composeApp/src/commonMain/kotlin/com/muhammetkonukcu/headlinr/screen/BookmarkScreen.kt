@@ -195,20 +195,22 @@ private fun NewsEntityItem(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        val isDarkTheme = isSystemInDarkTheme()
-        val placeholder =
-            if (isDarkTheme) Res.drawable.placeholder_dark else Res.drawable.placeholder_light
+        if (!newsEntity.imageUrl.isNullOrBlank()) {
+            val isDarkTheme = isSystemInDarkTheme()
+            val placeholder =
+                if (isDarkTheme) Res.drawable.placeholder_dark else Res.drawable.placeholder_light
 
-        LoadAsyncImage(
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(3f / 2f)
-                .clip(RoundedCornerShape(size = 12.dp)),
-            model = newsEntity.imageUrl,
-            contentDescription = newsEntity.title,
-            placeholderRes = painterResource(placeholder),
-            errorRes = painterResource(placeholder),
-        )
+            LoadAsyncImage(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(3f / 2f)
+                    .clip(RoundedCornerShape(size = 12.dp)),
+                model = newsEntity.imageUrl,
+                contentDescription = newsEntity.title,
+                placeholderRes = painterResource(placeholder),
+                errorRes = painterResource(placeholder),
+            )
+        }
 
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             IconButton(onClick = {}) {
