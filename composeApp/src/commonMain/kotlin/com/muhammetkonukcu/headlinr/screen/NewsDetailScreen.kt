@@ -1,5 +1,6 @@
 package com.muhammetkonukcu.headlinr.screen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -48,6 +49,7 @@ import headlinr.composeapp.generated.resources.ph_caret_left
 import headlinr.composeapp.generated.resources.placeholder_dark
 import headlinr.composeapp.generated.resources.placeholder_light
 import io.ktor.http.decodeURLQueryComponent
+import io.ktor.http.encodeURLParameter
 import kotlinx.serialization.json.Json
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -87,6 +89,7 @@ fun NewsDetailScreen(
         bottomBar = { DetailBottomBar(url = article.url) }
     ) { innerPadding ->
         DetailArticleColumn(
+            navController = navController,
             innerPadding = innerPadding,
             article = article
         )
@@ -163,7 +166,11 @@ private fun DetailBottomBar(url: String) {
 }
 
 @Composable
-private fun DetailArticleColumn(innerPadding: PaddingValues, article: Article) {
+private fun DetailArticleColumn(
+    navController: NavController,
+    innerPadding: PaddingValues,
+    article: Article
+) {
     val scrollState = rememberScrollState()
     Column(
         modifier = Modifier
@@ -200,7 +207,13 @@ private fun DetailArticleColumn(innerPadding: PaddingValues, article: Article) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(3f / 2f)
-                    .clip(RoundedCornerShape(size = 12.dp)),
+                    .clip(RoundedCornerShape(size = 12.dp))
+                    .clickable {
+                        val imageUrl = article.cleanImageUrl!!.encodeURLParameter()
+                        navController.navigate(route = "ImageDetail/$imageUrl") {
+                            launchSingleTop = true
+                        }
+                    },
                 model = article.cleanImageUrl,
                 contentDescription = article.title,
                 placeholderRes = painterResource(placeholder),
