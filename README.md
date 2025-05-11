@@ -35,7 +35,7 @@ country, with the flexibility to search and bookmark favorite articles.
 | Image Loading        | [Coil](https://coil-kt.github.io/coil/)                                  |
 | Networking           | [Ktor Client](https://ktor.io/)                                          |
 | Persistence          | [Room](https://developer.android.com/jetpack/androidx/releases/room)     |
-| Pagination           | [Multiplatform Paging] (https://github.com/cashapp/multiplatform-paging) |
+| Pagination           | [Multiplatform Paging](https://github.com/cashapp/multiplatform-paging) |
 
 ---
 
